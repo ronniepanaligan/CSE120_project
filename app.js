@@ -10,7 +10,9 @@ var mongoose = require('mongoose');
 var app = express();
 var port = process.env.PORT || 3000;
 
+mongoose.Promise = global.Promise;
 var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cse120', { useMongoClient: true });
+//var db = mongoose.connect('mongodb://localhost/cse120', { useMongoClient: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,6 +28,11 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.get('/', function (req, res) {
   res.render('home');
 });
+
+//routes
+var api = require('./routes/api');
+
+app.use('/api', api);
 
 app.listen(port, function(){
     console.log('running on Port '+ port);
