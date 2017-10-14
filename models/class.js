@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 
+//define class class
 var classModel = new schema({
   classId:{
     type: String,

@@ -11,8 +11,8 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
-var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cse120', { useMongoClient: true });
-//var db = mongoose.connect('mongodb://localhost/cse120', { useMongoClient: true });
+//var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cse120', { useMongoClient: true });
+var db = mongoose.connect('mongodb://localhost/cse120', { useMongoClient: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'views')));
 
+//render home.html from views
 app.get('/', function (req, res) {
   res.render('home');
 });
