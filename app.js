@@ -11,8 +11,8 @@ var app = express();
 var port = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
-//var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cse120', { useMongoClient: true });
-var db = mongoose.connect('mongodb://localhost/cse120', { useMongoClient: true });
+var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cse120', { useMongoClient: true });
+//var db = mongoose.connect('mongodb://localhost/cse120', { useMongoClient: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
