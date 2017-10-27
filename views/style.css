@@ -1,0 +1,14 @@
+h1 {
+	text-align: center;
+}
+
+#loginForm {
+	max-width: 450px;
+	margin: 0 auto;
+	padding-top: 20px;
+}
+
+#logInButton {
+	margin-top: 20px;
+	width: 100%;
+}

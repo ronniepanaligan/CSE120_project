@@ -5,25 +5,29 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var methodOverride = require('method-override');
 var mongoose = require('mongoose');
+var database = require('./config/database');
 
 var app = express();
 var port = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
-var db = mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/cse120', { useMongoClient: true });
-//var db = mongoose.connect('mongodb://localhost/cse120', { useMongoClient: true });
+mongoose.connect(database.url, { useMongoClient: true });
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+//app.use(express.static(__dirname + '/public'));
+
 //middleware stuff
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'views')));
+app.use(methodOverride());
 
 //render home.html from views
 app.get('/', function (req, res) {
@@ -31,9 +35,8 @@ app.get('/', function (req, res) {
 });
 
 //routes
-var api = require('./routes/api');
-
-app.use('/api', api);
+var api = require('./routes/api.js')(app);
+var routes = require('./routes/routes')(app);
 
 app.listen(port, function(){
     console.log('running on Port '+ port);
