@@ -31,7 +31,7 @@ app.use(methodOverride());
 
 //render home.html from views
 app.get('/', function (req, res) {
-  res.render('home');
+  res.render('login');
 });
 
 //routes
