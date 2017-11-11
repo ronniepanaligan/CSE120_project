@@ -7,6 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
+var request = require('request');
+var cheerio = require('cheerio');
 var database = require('./config/database');
 
 var app = express();
@@ -28,6 +30,12 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(methodOverride());
+
+//setInterval(function(){
+//  console.log('hi');
+//}, 500);
+
+require('./config/classScrape');
 
 //render home.html from views
 app.get('/', function (req, res) {

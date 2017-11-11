@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
+var user = require('./user');
 
 //define class class
 var classModel = new schema({
@@ -38,6 +39,9 @@ var classModel = new schema({
   },
   seatsAvail: {
     type: Number
+  },
+  queue: {
+    type: [user.schema]
   }
 });
 
