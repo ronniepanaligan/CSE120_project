@@ -1,6 +1,7 @@
 var express = require('express');
 var classRouter = express.Router();
-var Class = require('../models/class');
+var Class = require('../models/ucmClass');
+var User = require('../models/user');
 
 module.exports = function(app) {
   app.get('/api/classes', function(req, res) {
