@@ -2,6 +2,7 @@ var express = require('express');
 var classRouter = express.Router();
 var Class = require('../models/ucmClass');
 var User = require('../models/user');
+var Schedule = require('../models/schedule');
 
 module.exports = function(app) {
   //These routes handle adding registered classes to a user
@@ -89,6 +90,15 @@ module.exports = function(app) {
           res.send(err)
         res.json(classes);
       });
+    });
+  });
+
+  //These routes handle schedule create, delete, update
+  app.get('/api/schedules', function(req, res) {
+    Schedule.find(function(err, schedules) {
+      if(err)
+        res.send(err);
+      res.json(schedules);
     });
   });
 };

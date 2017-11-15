@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
 var ucmClass = require('./ucmClass');
+var userSchedule = require('./schedule')
 
 //define class class
 var userModel = new schema({
@@ -21,6 +22,9 @@ var userModel = new schema({
   },
   registeredClasses: {
     type: [ucmClass.schema]
+  },
+  savedSchedules : {
+    type: [userSchedule.schema]
   }
 });
 
