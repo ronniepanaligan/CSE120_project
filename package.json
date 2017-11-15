@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "s": "node server.js",
     "build": "webpack --config webpack.prod.config.js",
-    "start": "node server.js"
+    "dev": "webpack-dev-server --hot --inline",
+    "start": "npm run build && NODE_ENV=production node server.js"
   },
   "repository": {
     "type": "git",
