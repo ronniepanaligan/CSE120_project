@@ -17,11 +17,6 @@ const port = process.env.PORT || 3000;
 mongoose.Promise = global.Promise;
 mongoose.connect(database.url, { useMongoClient: true });
 
-// view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.engine('html', require('ejs').renderFile);
-//app.set('view engine', 'html');
-
 app.use(express.static(path.join(__dirname, 'dist')));
 
 //middleware stuff
@@ -36,10 +31,7 @@ app.use(methodOverride());
 //}, 500);
 
 //require('./config/classScrape');
-
-//render home.html from views
 app.get('/', function (req, res) {
-  //res.render('login');
   res.sendFile(__dirname + '/dist/index.html');
 });
 

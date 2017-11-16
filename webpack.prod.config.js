@@ -1,7 +1,5 @@
 var webpack = require('webpack');
 var path = require('path');
-// React v.16 uses some newer JS functionality, so to ensure everything
-// works across all browsers, we're adding babel-polyfill here.
 const TransferWebpackPlugin = require('transfer-webpack-plugin');
 require('babel-polyfill');
 
@@ -46,7 +44,5 @@ module.exports = {
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    // Transfer Files
   ]
 };
