@@ -11,8 +11,11 @@ We are redesigning the class registration system at UC Merced by including a bet
 - [ ] complete schedule system
 - [ ] implement a function to check if user has no conflictions when registering
 
-To get started you must have node installed and have mongodb running
-Install dependencies
+To get started you must have the following
+1. Node
+2. MongoDB (Have this running before starting server)
+
+First install dependencies
 ```
 npm install
 ```
@@ -23,4 +26,8 @@ npm run dev
 To run a production build
 ```
 npm run start
+```
+To test out the REST api 
+```
+node server.js
 ```
