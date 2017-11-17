@@ -25,11 +25,7 @@ module.exports = {
     publicPath: '/',
     filename: 'bundle.js'
   },
-  devtool: 'source-map',
-  devServer: {
-    contentBase: './dist',
-    hot: true
-  },
+  devtool: 'hidden-source-map',
   plugins: [
     new webpack.DefinePlugin({
       'process.env':{
@@ -38,7 +34,6 @@ module.exports = {
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        // suppresses warnings, usually from module minification
         warnings: false,
       },
     }),

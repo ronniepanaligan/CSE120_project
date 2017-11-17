@@ -14,6 +14,7 @@ We are redesigning the class registration system at UC Merced by including a bet
 To get started you must have the following
 1. Node
 2. MongoDB (Have this running before starting server)
+3. Change the url in database.js file to the your db
 
 First install dependencies
 ```
@@ -27,7 +28,7 @@ To run a production build
 ```
 npm run start
 ```
-To test out the REST api 
+To test out the REST api
 ```
 node server.js
 ```
