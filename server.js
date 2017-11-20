@@ -30,14 +30,12 @@ app.use(methodOverride());
 //  console.log('hi');
 //}, 500);
 
-//require('./config/classScrape');
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/dist/index.html');
-});
-
-//routes
 const api = require('./routes/api.js')(app);
 const routes = require('./routes/routes')(app);
+//require('./config/classScrape');
+app.get('/*', function (req, res) {
+  res.sendFile(__dirname + '/dist/index.html');
+});
 
 app.listen(port, function(){
     console.log('running on Port '+ port);

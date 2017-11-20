@@ -74,9 +74,9 @@ module.exports = function(app) {
       Class.find(function(err, classes) {
         if(err)
           res.send(err);
+        console.log(classs);
       });
     });
-    res.json(classes);
   });
 
   app.delete('/api/classes/:class_id', function(req, res) {

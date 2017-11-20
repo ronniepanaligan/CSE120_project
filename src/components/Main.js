@@ -11,7 +11,14 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
+import { BrowserRouter, Route } from 'react-router-dom';
 import AppBarExampleIcon from './Nav';
+import HomePage from './homePage';
+import ClassListPage from './classListPage';
+
+const Dashboard = () => <h2>Dashboard</h2>
+const SurveyNew = () => <h2>SurveyNew</h2>
+const Landing = () => <h2>Landing</h2>
 
 const styles = {
   container: {
@@ -22,8 +29,6 @@ const styles = {
     bottom: 0,
     width: '100%',
     paddingTop: 20
-  },
-  body: {
   },
   float: {
     margin: 0,
@@ -60,10 +65,14 @@ class Main extends Component {
       <MuiThemeProvider muiTheme={muiTheme}>
         <div style={styles.container}>
           <div style={styles.header}>
-            <AppBarExampleIcon />
-          </div>
-          <div style={styles.body}>
-
+          <BrowserRouter>
+            <div>
+              <AppBarExampleIcon />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/classListings" component={ClassListPage} />
+              <Route path="/surveys/new" component={SurveyNew} />
+            </div>
+            </BrowserRouter>
           </div>
           <div style={styles.footer}>
 

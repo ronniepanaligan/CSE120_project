@@ -1,4 +1,4 @@
-# CSE 120 Project
+# UCM Sutomatic Registration
 developed by Ronnie Panaligan, Wesley Chen & Vardhan Solanki for CSE 120 at UC Merced
 
 ## What are we Creating?
@@ -10,6 +10,7 @@ We are redesigning the class registration system at UC Merced by including a bet
 - [ ] add classes to main database hosted on heroku
 - [ ] complete schedule system
 - [ ] implement a function to check if user has no conflictions when registering
+- [ ] create a function that allows a user to register for a class
 
 To get started you must have the following
 1. Node
@@ -30,5 +31,5 @@ npm run start
 ```
 To test out the REST api
 ```
-node server.js
+npm run startDev
 ```

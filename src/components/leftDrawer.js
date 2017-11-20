@@ -16,8 +16,9 @@ class LeftDrawer extends React.Component {
     return (
       <div>
       <Drawer open={this.props.open}>
-        <MenuItem>Menu Item</MenuItem>
-        <MenuItem>Menu Item 2</MenuItem>
+        <MenuItem>Register</MenuItem>
+        <MenuItem>Class Listing</MenuItem>
+        <MenuItem>Schedules</MenuItem>
       </Drawer>
       </div>
     );
