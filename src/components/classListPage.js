@@ -44,7 +44,7 @@ class ClassListPage extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    axios.post('http://localhost:3000/api/classes', {
+    axios.post('/api/classes', {
       crn: this.state.crn,
       courseNum: this.state.courseNum,
       courseTitle: this.state.courseTitle,
