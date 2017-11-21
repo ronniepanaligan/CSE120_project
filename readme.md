@@ -1,4 +1,4 @@
-# UCM Sutomatic Registration
+# UCM Automatic Registration
 developed by Ronnie Panaligan, Wesley Chen & Vardhan Solanki for CSE 120 at UC Merced
 
 ## What are we Creating?

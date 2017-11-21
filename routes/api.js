@@ -7,17 +7,18 @@ var Schedule = require('../models/schedule');
 module.exports = function(app) {
   //These routes handle adding registered classes to a user
   app.post('/api/registerClass', function(req, res) {
-    var crn = req.body.crn;
+    var c_id = req.body.c_id;
     var ucmID = req.body.ucmID;
-    Class.findOne({ 'CRN': crn }, function(err, c) {
+    Class.findById(c_id, function(err, c) {
       if(err)
         throw err;
+      console.log(c);
       User.findOneAndUpdate({ 'ucmID' : ucmID }, {$push: {registeredClasses: c}},function(err, user) {
         if(err)
           throw err;
+        res.json(user);
       });
     });
-    res.json(user);
   });
 
   //These routes handle user create, delete
@@ -26,6 +27,17 @@ module.exports = function(app) {
       if(err)
         res.send(err);
       res.json(users);
+    });
+  });
+
+  app.delete('/api/users/:user_id', function(req, res) {
+    User.remove({
+      _id : req.params.user_id
+    }, function(err, user) {
+      if (err)
+        res.send(err);
+      res.json(user);
+      });
     });
   });
 

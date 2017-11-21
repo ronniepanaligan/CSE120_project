@@ -15,10 +15,8 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import AppBarExampleIcon from './Nav';
 import HomePage from './homePage';
 import ClassListPage from './classListPage';
-
-const Dashboard = () => <h2>Dashboard</h2>
-const SurveyNew = () => <h2>SurveyNew</h2>
-const Landing = () => <h2>Landing</h2>
+import RegisterPage from './registerPage';
+import SchedulePage from './schedulePage';
 
 const styles = {
   container: {
@@ -70,7 +68,8 @@ class Main extends Component {
               <AppBarExampleIcon />
               <Route exact path="/" component={HomePage} />
               <Route exact path="/classListings" component={ClassListPage} />
-              <Route path="/surveys/new" component={SurveyNew} />
+              <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/schedules" component={SchedulePage} />
             </div>
             </BrowserRouter>
           </div>
