@@ -39,7 +39,6 @@ module.exports = function(app) {
       res.json(user);
       });
     });
-  });
 
   app.post('/api/users', function(req, res) {
     User.create({
