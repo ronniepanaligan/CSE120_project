@@ -9,6 +9,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const request = require('request');
 const cheerio = require('cheerio');
+const passport = require('passport');
 const database = require('./config/database');
 
 const app = express();
@@ -23,8 +24,15 @@ app.use(express.static(path.join(__dirname, 'dist')));
 app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-//app.use(express.static(path.join(__dirname, 'views')));
 app.use(methodOverride());
+app.use(passport.initialize());
+app.use(passport.session());
+
+// load passport strategies
+const localSignupStrategy = require('./config/local-signup');
+const localLoginStrategy = require('./config/local-login');
+passport.use('local-signup', localSignupStrategy);
+passport.use('local-login', localLoginStrategy);
 
 //setInterval(function(){
 //  console.log('hi');
