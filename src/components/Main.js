@@ -17,10 +17,12 @@ import HomePage from './homePage';
 import ClassListPage from './classListPage';
 import RegisterPage from './registerPage';
 import SchedulePage from './schedulePage';
+import LoginPage from './loginPage'
 
 const styles = {
   container: {
     height: '100%',
+    backgroundColor: '#FAFAFA'
   },
   footer: {
     position: 'relative',
@@ -66,7 +68,8 @@ class Main extends Component {
           <BrowserRouter>
             <div>
               <AppBarExampleIcon />
-              <Route exact path="/" component={HomePage} />
+              <Route exact path="/" component={LoginPage} />
+              <Route exact path="/home" component={HomePage} />
               <Route exact path="/classListings" component={ClassListPage} />
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path="/schedules" component={SchedulePage} />
