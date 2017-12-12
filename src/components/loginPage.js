@@ -4,15 +4,19 @@ import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 import axios from 'axios';
+import { browserHistory } from 'react-router';
+import {fetchUser} from '../actions/index';
+import cookie from 'react-cookie'
 
 class LoginPage extends React.Component {
-  constructor() {
-      super();
+  constructor(props, context) {
+      super(props, context);
       this.state = {
         user: {
           email: '',
           password: ''
-        }
+        },
+        isLogged: false
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,6 +34,28 @@ class LoginPage extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    axios.post('/auth/login', {
+      email: this.state.user.email,
+      password: this.state.user.password
+    })
+    .then((res => {
+      var user = {
+        _id: res.data.user._id,
+        ucmID: res.data.user.ucmID,
+        email: res.data.user.email,
+        firstName: res.data.user.firstName,
+        lastName: res.data.user.lastName,
+        major: res.data.user.major
+      }
+      console.log(res);
+      console.log(fetchUser(this.state.user.email));
+      localStorage.setItem('token', 'hi');
+      localStorage.setItem('user', JSON.stringify(user));
+      this.props.toggleAuthStatus();
+    }))
+    .catch(function(err){
+      console.log(err);
+    });
     console.log(this.state.user);
     this.setState({
       user: {
@@ -42,23 +68,20 @@ class LoginPage extends React.Component {
   render() {
     return (
       <Grid>
-        <Row>
-          <Col lg={4} s={6}>
-            <Card>
+            <Card className="loginCard">
               <CardMedia>
                 <div>
-                  <TextField floatingLabelText="Email" name="loginEmail" onChange={this.handleChange} value={this.state.user.email}/>
+                  <TextField floatingLabelText="Email" name="email" onChange={this.handleChange} value={this.state.user.email}/>
                   <br />
-                  <TextField floatingLabelText="Password" type="password" name="loginPassword" onChange={this.handleChange} value={this.state.user.password}  />
+                  <TextField floatingLabelText="Password" type="password" name="password" onChange={this.handleChange} value={this.state.user.password}  />
                   <br />
                 </div>
               </CardMedia>
               <CardActions>
-                <FlatButton label="Submit" onTouchTap={this.handleSubmit} />
+                <FlatButton label="Submit" onClick={this.handleSubmit} />
               </CardActions>
             </Card>
-          </Col>
-        </Row>
+
       </Grid>
     );
   }

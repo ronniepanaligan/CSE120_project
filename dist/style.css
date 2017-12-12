@@ -1,10 +1,28 @@
 html {
   font-family: 'Roboto', sans-serif;
+  background-color: #FAFAFA;
 }
 
 body {
   font-size: 13px;
   line-height: 20px;
   margin: 0;
-  background-color: #fafafa;
+  background-color: #FAFAFA;
+  
+}
+
+.loginCard {
+  max-width: 450px !important;
+	margin: 0 auto;
+	display: block;
+  padding-top: '50px' !important;
+  text-align: center;
+}
+
+.cardStyle {
+  margin-top: 50px;
+}
+
+.container {
+  padding-top: 50px;
 }
