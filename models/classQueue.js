@@ -14,10 +14,11 @@ var classQueueModel = new schema({
     type: Number
   },
   isFull:{
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   registerQueue: {
-    type: [user.schema]
+    type: [Number]
   }
 });
 

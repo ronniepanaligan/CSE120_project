@@ -7,6 +7,7 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import TextField from 'material-ui/TextField';
 import axios from 'axios';
 import Snackbar from 'material-ui/Snackbar';
+import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table';
 
 //Modal for when a user clicks on a class, contains the class information
 class ClassModal extends React.Component {
@@ -17,6 +18,7 @@ class ClassModal extends React.Component {
       currentItem: '',
       username: '',
       items: [],
+      selectedLab: '',
       selectedClass: {
         crn: '',
         subject: '',
@@ -31,11 +33,14 @@ class ClassModal extends React.Component {
         instructor: '',
         maxEnroll: '',
         actEnroll: '',
-        seatsAvail: ''
+        seatsAvail: '',
+        labs: [],
+        discussions: []
       }
     }
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleRegister = this.handleRegister.bind(this);
   }
 
   componentDidMount(e) {
@@ -43,25 +48,34 @@ class ClassModal extends React.Component {
       axios.get('/api/classes/' + this.props.selectedClass)
       .then((res) => {
         console.log('crn: ' + res.data.crn)
-        this.setState({
-          selectedClass: {
-            crn: res.data.crn,
-            subject: res.data.subject,
-            courseNum: res.data.courseNum,
-            courseTitle: res.data.courseTitle,
-            units: res.data.units,
-            actv: res.data.actv,
-            days: res.data.days,
-            time: res.data.time,
-            room: res.data.room,
-            startEnd: res.data.startEnd,
-            instructor: res.data.instructor,
-            maxEnroll: res.data.maxEnroll,
-            actEnroll: res.data.actEnroll,
-            seatsAvail: res.data.seatsAvail
-          },
-          open: this.props.open
-        });
+        axios.get('/api/reqClass/' + res.data.crn)
+        .then((response) => {
+          var lab = response.data.labs;
+          var labs = []
+          for(let l in lab){
+            labs.push(lab[l]);
+          }
+          this.setState({
+            selectedClass: {
+              crn: res.data.crn,
+              subject: res.data.subject,
+              courseNum: res.data.courseNum,
+              courseTitle: res.data.courseTitle,
+              units: res.data.units,
+              actv: res.data.actv,
+              days: res.data.days,
+              time: res.data.time,
+              room: res.data.room,
+              startEnd: res.data.startEnd,
+              instructor: res.data.instructor,
+              maxEnroll: res.data.maxEnroll,
+              actEnroll: res.data.actEnroll,
+              seatsAvail: res.data.seatsAvail,
+              labs : labs
+            },
+            open: this.props.open
+          })
+        })
       });
     }
   }
@@ -72,7 +86,7 @@ class ClassModal extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  handleSave(e) {
     e.preventDefault();
 
     let currentUser = JSON.parse(localStorage.getItem('user'));
@@ -81,11 +95,44 @@ class ClassModal extends React.Component {
     axios.post('/api/saveClass', {
       'ucmID': currentUser.ucmID,
       'crn' : this.state.selectedClass.crn
+    });
+    axios.post('/api/saveClass', {
+      'ucmID': currentUser.ucmID,
+      'crn' : this.state.selectedLab
     })
     .then((res) => {
       this.setState({open: false});
       this.props.toggleModal(res.data.msg);
     })
+  }
+
+  handleRegister(e) {
+    e.preventDefault();
+
+    let currentUser = JSON.parse(localStorage.getItem('user'));
+    console.log(currentUser.ucmID)
+    console.log(this.state.selectedClass.crn)
+    axios.post('/api/saveClass', {
+      'ucmID': currentUser.ucmID,
+      'c_id' : this.state.selectedClass.crn
+    })
+    .then((res) => {
+      axios.post('/api/saveClass', {
+        'ucmID': currentUser.ucmID,
+        'c_id' : this.state.selectedLab
+      })
+      .then((response) => {
+        this.setState({open: false});
+        this.props.toggleModal(res.data.msg);
+      })
+    })
+  }
+
+  handleSelectLab(crn){
+    console.log('clock')
+    this.setState({
+      selectedLab: crn
+    });
   }
 
   handleOpen = () => {
@@ -101,6 +148,7 @@ class ClassModal extends React.Component {
   };
 
   render() {
+    console.log(this.state.selectedClass);
     const actions = [
       <FlatButton
         label="Cancel"
@@ -110,14 +158,12 @@ class ClassModal extends React.Component {
       <FlatButton
         label="Save Class"
         primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleSubmit}
+        onTouchTap={this.handleSave}
       />,
       <FlatButton
         label="Register"
         primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleSubmit}
+        onTouchTap={this.handleRegister}
       />,
     ];
 
@@ -130,8 +176,32 @@ class ClassModal extends React.Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
         >
-        <br />
-        <p>{this.state.selectedClass.units}</p>
+          <p>This class requires you to register for a corresponding lab</p>
+          <Table>
+            <TableHeader displaySelectAll={false}>
+              <TableHeaderColumn>CRN</TableHeaderColumn>
+              <TableHeaderColumn>ACTV</TableHeaderColumn>
+              <TableHeaderColumn>Course Number</TableHeaderColumn>
+              <TableHeaderColumn>Course Title</TableHeaderColumn>
+              <TableHeaderColumn>Time</TableHeaderColumn>
+              <TableHeaderColumn>Days</TableHeaderColumn>
+            </TableHeader>
+            <TableBody>
+              {this.state.selectedClass.labs.map((item) => {
+                return (
+                  <TableRow onTouchTap={() => this.handleSelectLab(item.crn)}>
+                    <TableRowColumn>{item.crn}</TableRowColumn>
+                    <TableRowColumn>{item.actv}</TableRowColumn>
+                    <TableRowColumn>{item.courseNum}</TableRowColumn>
+                    <TableRowColumn>{item.courseTitle}</TableRowColumn>
+                    <TableRowColumn>{item.startTime.time}-{item.endTime.time}</TableRowColumn>
+                    <TableRowColumn>{item.days}</TableRowColumn>
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+          <p>{this.state.selectedClass.units}</p>
         </Dialog>
       </div>
     );

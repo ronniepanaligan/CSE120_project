@@ -23,7 +23,6 @@ class LeftDrawer extends React.Component {
       </div>
     );
   }
-
 }
 
 export default LeftDrawer;
