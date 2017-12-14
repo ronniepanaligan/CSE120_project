@@ -10,13 +10,13 @@ const mongoose = require('mongoose');
 const request = require('request');
 const cheerio = require('cheerio');
 const passport = require('passport');
-const config = require('./config/main');
+const database = require('./config/database');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.url, { useMongoClient: true });
+mongoose.connect(database.url, { useMongoClient: true });
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -25,11 +25,14 @@ app.use(logger('dev'));
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(methodOverride());
-app.use(session({ secret: config.secret, saveUninitialized: true, resave: true, cookie: { maxAge: 60 }  }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./config/passport');
+// load passport strategies
+const localSignupStrategy = require('./config/local-signup');
+const localLoginStrategy = require('./config/local-login');
+passport.use('local-signup', localSignupStrategy);
+passport.use('local-login', localLoginStrategy);
 
 //setInterval(function(){
 //  console.log('hi');
@@ -37,8 +40,7 @@ require('./config/passport');
 
 const api = require('./routes/api.js')(app);
 const routes = require('./routes/routes')(app);
-const auth = require('./routes/auth')(app);
-
+//require('./config/classScrape');
 app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/dist/index.html');
 });

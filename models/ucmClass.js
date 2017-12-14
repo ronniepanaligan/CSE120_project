@@ -7,9 +7,6 @@ var classModel = new schema({
   crn: {
     type: Number
   },
-  subject: {
-    type: String
-  },
   courseNum: {
     type: String
   },
@@ -28,16 +25,8 @@ var classModel = new schema({
   room: {
     type: String
   },
-  days: {
+  startEnd: {
     type: String
-  },
-  startTime: {
-    time: String,
-    values: Number
-  },
-  endTime: {
-    time: String,
-    values: Number
   },
   instructor: {
     type: String
@@ -50,6 +39,9 @@ var classModel = new schema({
   },
   seatsAvail: {
     type: Number
+  },
+  queue: {
+    type: [user.schema]
   }
 });
 

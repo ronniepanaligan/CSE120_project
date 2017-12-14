@@ -5,7 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import { Grid, Row, Col } from 'react-bootstrap';
 import RegisteredClasses from './registerComp/registeredClasses';
-import RegisterModal from './registerModal';
+import ClassModal from './classModal';
 import axios from 'axios';
 
 const style = {
@@ -16,7 +16,6 @@ class RegisterPage extends React.Component {
       super(props);
       this.state = {
         modalOpen: false,
-        tableClick: '',
         username: '',
         items: [],
         selectedClass: '',
@@ -24,52 +23,35 @@ class RegisterPage extends React.Component {
           email: '',
           ucmID: '',
           savedClasses: [],
-          registeredClasses: [],
-          inQueue: []
+          registeredClasses: []
         },
         height: '100px'
       }
       this.toggleModal = this.toggleModal.bind(this);
       this.handleClick = this.handleClick.bind(this);
-      this.handleClickR = this.handleClickR.bind(this);
-      this.fetchData = this.fetchData.bind(this);
     }
 
   componentDidMount() {
-    this.fetchData();
-  }
-
-  fetchData(e) {
     let currentUser = localStorage.getItem('user');
     let a = JSON.parse(currentUser);
 
     axios.get('/api/users/' + a.ucmID)
     .then((res) => {
-
+      console.log('a', res.data.savedClasses)
       this.setState({
         user: {
           email: a.email,
           ucmID: a.ucmID,
           savedClasses: res.data.savedClasses,
-          registeredClasses: res.data.registeredClasses,
-          inQueue: res.data.inQueue
+          registeredClasses: res.data.registeredClasses
         }
-      });
-    });
+      })
+    })
   }
 
   handleClick(e) {
     this.setState({
       selectedClass: e.crn,
-      tableClick: 'S',
-      modalOpen: true
-    });
-  }
-
-  handleClickR(e) {
-    this.setState({
-      selectedClass: e.crn,
-      tableClick: 'R',
       modalOpen: true
     });
   }
@@ -91,7 +73,7 @@ class RegisterPage extends React.Component {
           <Row>
             <div>
               {this.state.modalOpen ? (
-                <RegisterModal fetchData={this.fetchData} open={true} toggleModal={this.toggleModal} selectedClass={this.state.selectedClass} table={this.state.tableClick}/>
+                <ClassModal open={true} toggleModal={this.toggleModal} selectedClass={this.state.selectedClass}/>
               ) : (
                 <p></p>
               )}
@@ -99,30 +81,11 @@ class RegisterPage extends React.Component {
           </Row>
           <Row>
             <Col lg={6}>
-            <Card style={style}>
-              <CardHeader title="In Queue"/>
-                <Table height={this.state.height}>
-                  <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
-                    <TableRow>
-                      <TableHeaderColumn>CRN</TableHeaderColumn>
-                      <TableHeaderColumn>Course Title</TableHeaderColumn>
-                      <TableHeaderColumn>Time</TableHeaderColumn>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody displayRowCheckbox={false}>
-                  {this.state.user.inQueue.map((item) => {
-
-                      return (
-                        <TableRow onTouchTap={() => this.handleClick(item)}>>
-                          <TableRowColumn>{item}</TableRowColumn>
-                          <TableRowColumn>{item.courseTitle}</TableRowColumn>
-                          <TableRowColumn>{item.startTime.time}-{item.endTime.time}</TableRowColumn>
-                        </TableRow>
-                      )
-
-                  })}
-                  </TableBody>
-                </Table>
+              <Card style={style}>
+                <CardHeader title="Register for Class" subtitle="Input CRN to register for class" />
+                <CardActions>
+                  <FlatButton label="Get started" />
+                </CardActions>
               </Card>
             </Col>
             <Col lg={6}>
@@ -138,21 +101,21 @@ class RegisterPage extends React.Component {
                     </TableHeader>
                     <TableBody displayRowCheckbox={false}>
                     {this.state.user.savedClasses.map((item) => {
-                      if(item.actv == 'LECT'){
-                        return (
-                          <TableRow onTouchTap={() => this.handleClick(item)}>>
-                            <TableRowColumn>{item.crn}</TableRowColumn>
-                            <TableRowColumn>{item.courseTitle}</TableRowColumn>
-                            <TableRowColumn>{item.startTime.time}-{item.endTime.time}</TableRowColumn>
-                          </TableRow>
-                        )
-                      }
+                      return (
+                        <TableRow onTouchTap={() => this.handleClick(item)}>>
+                          <TableRowColumn>{item.crn}</TableRowColumn>
+                          <TableRowColumn>{item.courseTitle}</TableRowColumn>
+                          <TableRowColumn>{item.time}</TableRowColumn>
+                        </TableRow>
+                      )
                     })}
                     </TableBody>
                   </Table>
                 </Card>
               </Col>
-              <Col lg={12}>
+              </Row>
+              <Row>
+                <Col lg={12}>
                 <Card style={style}>
                   <CardHeader title="Registered Classes"/>
                     <Table>
@@ -166,10 +129,10 @@ class RegisterPage extends React.Component {
                       <TableBody displayRowCheckbox={false}>
                       {this.state.user.registeredClasses.map((item) => {
                         return (
-                          <TableRow onTouchTap={() => this.handleClickR(item)}>>
+                          <TableRow onTouchTap={() => this.handleClick(item)}>>
                             <TableRowColumn>{item.crn}</TableRowColumn>
                             <TableRowColumn>{item.courseTitle}</TableRowColumn>
-                            <TableRowColumn>{item.startTime.time}-{item.endTime.time}</TableRowColumn>
+                            <TableRowColumn>{item.time}</TableRowColumn>
                           </TableRow>
                         )
                       })}

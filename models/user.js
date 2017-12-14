@@ -5,12 +5,6 @@ var userSchedule = require('./schedule')
 
 //define class class
 var userModel = new schema({
-  email: {
-    type: String
-  },
-  password: {
-    type: String
-  },
   ucmID: {
     type: Number
   },
@@ -29,12 +23,8 @@ var userModel = new schema({
   registeredClasses: {
     type: [ucmClass.schema]
   },
-  savedClasses: [ucmClass.schema],
   savedSchedules : {
     type: [userSchedule.schema]
-  },
-  inQueue: {
-    type: [Number]
   }
 });
 
