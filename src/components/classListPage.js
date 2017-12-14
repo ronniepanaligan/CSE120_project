@@ -18,21 +18,7 @@ class ClassListPage extends React.Component {
         modalOpen: false,
         snackOpen: false,
         message: '',
-        selectedClass: '',
-        crn: '',
-        subject: '',
-        courseNum: '',
-        courseTitle: '',
-        units: '',
-        actv: '',
-        days: '',
-        time: '',
-        room: '',
-        startEnd: '',
-        instructor: '',
-        maxEnroll: '',
-        actEnroll: '',
-        seatsAvail: ''
+        selectedClass: ''
       }
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -55,50 +41,10 @@ class ClassListPage extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
-    axios.post('/api/classes', {
-      crn: this.state.crn,
-      subject: this.state.subject,
-      courseNum: this.state.courseNum,
-      courseTitle: this.state.courseTitle,
-      units: this.state.units,
-      actv: this.state.actv,
-      days: this.state.days,
-      time: this.state.time,
-      room: this.state.room,
-      startEnd: this.state.startEnd,
-      instructor: this.state.instructor,
-      maxEnroll: this.state.maxEnroll,
-      actEnroll: this.state.actEnroll,
-      seatsAvail: this.state.seatsAvail
-    })
-    .then((res) => {
-      console.log(c);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-
-    this.setState({
-      crn: '',
-      courseNum: '',
-      subject: '',
-      courseTitle: '',
-      units: '',
-      actv: '',
-      days: '',
-      time: '',
-      room: '',
-      startEnd: '',
-      instructor: '',
-      maxEnroll: '',
-      actEnroll: '',
-      seatsAvail: ''
-    });
   }
 
   toggleModal(e){
-    if(this.state.modalOpen){
+    if(this.state.modalOpen == true){
       this.setState({
         modalOpen: false,
         selectedClass: '',
@@ -109,7 +55,7 @@ class ClassListPage extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/classes')
+    axios.get('/api/lectures')
     .then((res) => {
       const newClasses = res.data.map((obj) => obj)
       const newState = []
@@ -170,6 +116,8 @@ class ClassListPage extends React.Component {
                     <TableHeaderColumn>CRN</TableHeaderColumn>
                     <TableHeaderColumn>Course Number</TableHeaderColumn>
                     <TableHeaderColumn>Course Title</TableHeaderColumn>
+                    <TableHeaderColumn>Seats Available</TableHeaderColumn>
+
                   </TableHeader>
                   <TableBody displayRowCheckbox={false}>
                     {this.state.classes.map((item) => {
@@ -179,6 +127,7 @@ class ClassListPage extends React.Component {
                           <TableRowColumn>{item.crn}</TableRowColumn>
                           <TableRowColumn>{item.courseNum}</TableRowColumn>
                           <TableRowColumn>{item.courseTitle}</TableRowColumn>
+                          <TableRowColumn>{item.seatsAvail}</TableRowColumn>
                         </TableRow>
                       )
                     }
@@ -189,37 +138,6 @@ class ClassListPage extends React.Component {
                 </Col>
             )
           })}
-        </Row>
-        <Row>
-          <Col>
-            <TextField name="crn" placeholder="crn" onChange={this.handleChange} value={this.state.crn}/>
-            <br />
-            <TextField name="subject" placeholder="subject" onChange={this.handleChange} value={this.state.subject}/>
-            <br />
-            <TextField name="courseNum" placeholder="courseNum" onChange={this.handleChange} value={this.state.courseNum}/>
-            <br />
-            <TextField name="courseTitle" placeholder="courseTitle" onChange={this.handleChange} value={this.state.courseTitle}/>
-            <br />
-            <TextField name="units" placeholder="units" onChange={this.handleChange} value={this.state.units}/>
-            <br />
-            <TextField name="actv" placeholder="actv" onChange={this.handleChange} value={this.state.actv}/>
-            <br />
-            <TextField name="days" placeholder="days" onChange={this.handleChange} value={this.state.days}/>
-            <br />
-            <TextField name="time" placeholder="time" onChange={this.handleChange} value={this.state.time}/>
-            <br />
-            <TextField name="room" placeholder="room" onChange={this.handleChange} value={this.state.room}/>
-            <br />
-            <TextField name="startEnd" placeholder="startEnd" onChange={this.handleChange} value={this.state.startEnd}/>
-            <br />
-            <TextField name="maxEnroll" placeholder="maxEnroll?" onChange={this.handleChange} value={this.state.maxEnroll}/>
-            <br />
-            <TextField name="actEnroll" placeholder="actEnroll" onChange={this.handleChange} value={this.state.actEnroll}/>
-            <br />
-            <TextField name="seatsAvail" placeholder="seatsAvail?" onChange={this.handleChange} value={this.state.seatsAvail}/>
-            <br />
-            <FlatButton label="Submit" onTouchTap={this.handleSubmit} />
-          </Col>
         </Row>
       </Grid>
     );

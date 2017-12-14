@@ -1,6 +1,5 @@
 var mongoose = require('mongoose');
 var schema = mongoose.Schema;
-var user = require('./user');
 
 //define class class
 var classQueueModel = new schema({
@@ -14,10 +13,11 @@ var classQueueModel = new schema({
     type: Number
   },
   isFull:{
-    type: Boolean
+    type: Boolean,
+    default: false
   },
   registerQueue: {
-    type: [user.schema]
+    type: [Number]
   }
 });
 

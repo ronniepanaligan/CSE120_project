@@ -8,6 +8,12 @@ var userModel = new schema({
   ucmID: {
     type: Number
   },
+  email: {
+    type: String
+  },
+  password: {
+    type: String
+  },
   firstName: {
     type: String
   },
@@ -19,6 +25,9 @@ var userModel = new schema({
   },
   registrationTime: {
     type: Date
+  },
+  savedClasses: {
+    type: [ucmClass.schema]
   },
   registeredClasses: {
     type: [ucmClass.schema]
